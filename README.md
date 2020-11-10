@@ -4,9 +4,10 @@
 
 | Date 	| Announcements 	|
 |-	|-	|
+| 06/10/2020  | New paper and SOTA in Emotion Recognition in Conversations. Refer to the directory [COSMIC](./COSMIC) for the code. Read the paper -- [COSMIC: COmmonSense knowledge for eMotion Identification in Conversations](https://arxiv.org/pdf/2010.02795.pdf).  |
 | 30/09/2020 	| New paper and baselines in utterance-level dialogue understanding have been released. Read our paper [Utterance-level Dialogue Understanding: An Empirical Study](https://arxiv.org/pdf/2009.13902.pdf). Fork the [codes](https://github.com/declare-lab/dialogue-understanding). 	|
 | 26/07/2020 	| New DialogueGCN code has been released. Please visit https://github.com/declare-lab/conv-emotion/tree/master/DialogueGCN-mianzhang. All the credit goes to the Mian Zhang (https://github.com/mianzhang/) 	|
-| 11/07/2020 	| Interested in reading the papers on ERC or related tasks such as sarcasm detection in conversations? We have compiled a comprehensive reading list for papers. Please visit https://github.com/declare-lab/awesome-erc 	|
+| 11/07/2020 	| Interested in reading the papers on ERC or related tasks such as sarcasm detection in conversations? We have compiled a comprehensive reading list for papers. Please visit https://github.com/declare-lab/awesome-emotion-recognition-in-conversations 	|
 | 07/06/2020: 	| New state-of-the-art results for the ERC task will be released soon. 	|
 | 07/06/2020: 	| The conv-emotion repo will be maintained on https://github.com/declare-lab/ 	|
 | 22/12/2019: 	| Code for DialogueGCN has been released. 	|
@@ -70,7 +71,86 @@ the *target* is
 Party 1: yes (angry)
 ```
 where the target emotion is _angry_.
-Moreover, this code can also be molded to train the network in an end-to-end manner. We will soon push these useful changes. 
+Moreover, this code can also be molded to train the network in an end-to-end manner. We will soon push these useful changes.
+
+## Present SOTA Results
+<table>
+  <tr>
+    <th rowspan="2">Methods</th>
+    <th>IEMOCAP</th>
+    <th colspan="2">DailyDialog</th>
+    <th colspan="2">MELD</th>
+    <th colspan="2">EmoryNLP</th>
+  </tr>
+
+  <tr>
+    <td>W-Avg F1</td>
+    <td>Macro F1</td>
+    <td>Micro F1</td>
+    <td>W-Avg F1 (3-cls)</td>
+    <td>W-Avg F1 (7-cls)</td>
+    <td>W-Avg F1 (3-cls)</td>
+    <td>W-Avg F1 (7-cls)</td>
+  </tr>
+  <tr>
+    <td>RoBERTa</td>
+    <td>54.55</td>
+    <td>48.20</td>
+    <td>55.16</td>
+    <td>72.12</td>
+    <td>62.02</td>
+    <td>55.28</td>
+    <td>37.29</td>
+  </tr>
+  <tr>
+    <td>RoBERTa DialogueRNN</td>
+    <td>64.76</td>
+    <td>49.65</td>
+    <td>57.32</td>
+    <td>72.14</td>
+    <td>63.61</td>
+    <td>55.36</td>
+    <td>37.44</td>
+  </tr>
+  <tr>
+    <td><b>RoBERTa COSMIC</b></td>
+   <td><b>65.28</b></td>
+   <td><b>51.05</b></td>
+   <td><b>58.48</b></td>
+   <td><b>73.20</b></td>
+   <td><b>65.21</b></td>
+   <td><b>56.51</b></td>
+   <td><b>38.11</b></td>
+  </tr>
+
+</table>
+
+## COSMIC: COmmonSense knowledge for eMotion Identification in Conversations
+
+[_COSMIC_](https://github.com/declare-lab/conv-emotion) addresses the task of utterance level emotion recognition in conversations using commonsense knowledge. It is a new framework that incorporates different elements of commonsense such as mental states, events, and causal relations, and build upon them to learn interactions between interlocutors participating in a conversation. Current state-of-the-art methods often encounter difficulties in context propagation, emotion shift detection, and differentiating between related emotion classes. By learning distinct commonsense representations, COSMIC addresses these challenges and achieves new state-of-the-art results for emotion recognition on four different benchmark conversational datasets. 
+
+![Alt text](cosmic.jpg?raw=true "COSMIC framework")
+
+### Execution
+
+First download the RoBERTa and COMET features [here](https://drive.google.com/file/d/1TQYQYCoPtdXN2rQ1mR2jisjUztmOzfZr/view?usp=sharing) and keep them in appropriate directories in `COSMIC/erc-training`. Then training and evaluation on the four datasets are to be done as follows:
+
+1. IEMOCAP: `python train_iemocap.py --active-listener`
+2. DailyDialog: `python train_dailydialog.py --active-listener --class-weight --residual`
+3. MELD Emotion: `python train_meld.py --active-listener --class-weight --residual`
+4. MELD Sentiment: `python train_meld.py --active-listener --class-weight --residual --classify sentiment`
+5. EmoryNLP Emotion: `python train_emorynlp.py --active-listener --class-weight --residual`
+6. EmoryNLP Sentiment: `python train_emorynlp.py --active-listener --class-weight --residual --classify sentiment`
+
+
+### Citation
+
+Please cite the following [paper](https://arxiv.org/pdf/2010.02795.pdf) if you find this code useful in your work.
+
+```bash
+COSMIC: COmmonSense knowledge for eMotion Identification in Conversations. D. Ghosal, N. Majumder, A. Gelbukh, R. Mihalcea, & S. Poria.  Findings of EMNLP 2020.
+```
+
 
 ## TL-ERC: Emotion Recognition in Conversations with Transfer Learning from Generative Conversation Modeling
 
@@ -142,7 +222,10 @@ __Note__: PyTorch Geometric makes heavy usage of CUDA atomic operations and is a
 
 Please cite the following paper if you find this code useful in your work.
 
-`DialogueGCN: A Graph Convolutional Neural Network for Emotion Recognition in Conversation. D. Ghosal, N. Majumder, S. Poria, N. Chhaya, & A. Gelbukh. EMNLP-IJCNLP (2019), Hong Kong, China.`
+```bash
+DialogueGCN: A Graph Convolutional Neural Network for Emotion Recognition in Conversation. D. Ghosal, N. Majumder, S. Poria, N. Chhaya, & A. Gelbukh. EMNLP-IJCNLP (2019), Hong Kong, China.
+```
+
 
 ## DialogueGCN-mianzhang: DialogueGCN Implementation by Mian Zhang
 Pytorch implementation to paper "DialogueGCN: A Graph Convolutional Neural Network for Emotion Recognition in Conversation". 
@@ -183,7 +266,9 @@ Mian Zhang (Github: mianzhang)
 
 Please cite the following paper if you find this code useful in your work.
 
-`DialogueGCN: A Graph Convolutional Neural Network for Emotion Recognition in Conversation. D. Ghosal, N. Majumder, S. Poria, N. Chhaya, & A. Gelbukh. EMNLP-IJCNLP (2019), Hong Kong, China.`
+```bash
+DialogueGCN: A Graph Convolutional Neural Network for Emotion Recognition in Conversation. D. Ghosal, N. Majumder, S. Poria, N. Chhaya, & A. Gelbukh. EMNLP-IJCNLP (2019), Hong Kong, China.
+```
 
 
 ## DialogueRNN: An Attentive RNN for Emotion Detection in Conversations
@@ -233,7 +318,9 @@ Please extract the contents of `DialogueRNN_features.zip`.
 
 Please cite the following paper if you find this code useful in your work.
 
-`DialogueRNN: An Attentive RNN for Emotion Detection in Conversations. N. Majumder, S. Poria, D. Hazarika, R. Mihalcea, E. Cambria, and G. Alexander. AAAI (2019), Honolulu, Hawaii, USA`
+```bash
+DialogueRNN: An Attentive RNN for Emotion Detection in Conversations. N. Majumder, S. Poria, D. Hazarika, R. Mihalcea, E. Cambria, and G. Alexander. AAAI (2019), Honolulu, Hawaii, USA
+```
 
 ## ICON
 
@@ -260,7 +347,9 @@ Interactive COnversational memory Network (ICON) is a multimodal emotion detecti
     - `python train_iemocap.py` for IEMOCAP
 
 ### Citation
-`ICON: Interactive Conversational Memory Networkfor Multimodal Emotion Detection. D. Hazarika, S. Poria, R. Mihalcea, E. Cambria, and R. Zimmermann. EMNLP (2018), Brussels, Belgium`
+```bash
+ICON: Interactive Conversational Memory Networkfor Multimodal Emotion Detection. D. Hazarika, S. Poria, R. Mihalcea, E. Cambria, and R. Zimmermann. EMNLP (2018), Brussels, Belgium
+```
 
 ## CMN
 [_CMN_](http://aclweb.org/anthology/N18-1193) is a neural framework for emotion detection in dyadic conversations. It leverages mutlimodal signals from text, audio and visual modalities. It specifically incorporates speaker-specific dependencies into its architecture for context modeling. Summaries are then generated from this context using multi-hop memory networks.
@@ -287,7 +376,7 @@ Interactive COnversational memory Network (ICON) is a multimodal emotion detecti
 
 Please cite the following paper if you find this code useful in your work.
 
-```
+```bash
 Hazarika, D., Poria, S., Zadeh, A., Cambria, E., Morency, L.P. and Zimmermann, R., 2018. Conversational Memory Network for Emotion Recognition in Dyadic Dialogue Videos. In Proceedings of the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies, Volume 1 (Long Papers) (Vol. 1, pp. 2122-2132).
 ```
 
@@ -315,7 +404,7 @@ Hazarika, D., Poria, S., Zadeh, A., Cambria, E., Morency, L.P. and Zimmermann, R
 
 Please cite the following paper if you find this code useful in your work.
 
-```
+```bash
 Poria, S., Cambria, E., Hazarika, D., Majumder, N., Zadeh, A. and Morency, L.P., 2017. Context-dependent sentiment analysis in user-generated videos. In Proceedings of the 55th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers) (Vol. 1, pp. 873-883).
 ```
 
@@ -341,7 +430,7 @@ Keras implementation of [_bc-LSTM_](http://www.aclweb.org/anthology/P17-1081).
 
 Please cite the following paper if you find this code useful in your work.
 
-```
+```bash
 Poria, S., Cambria, E., Hazarika, D., Majumder, N., Zadeh, A. and Morency, L.P., 2017. Context-dependent sentiment analysis in user-generated videos. In Proceedings of the 55th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers) (Vol. 1, pp. 873-883).
 ```
 
